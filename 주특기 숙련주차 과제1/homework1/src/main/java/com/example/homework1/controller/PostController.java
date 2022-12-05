@@ -1,16 +1,11 @@
 package com.example.homework1.controller;
 
 import com.example.homework1.dto.PostsListResponseDto;
-import com.example.homework1.dto.PostsResponseDto;
-import com.example.homework1.entity.Post;
+import com.example.homework1.dto.PostResponseDto;
+import com.example.homework1.dto.RequestDto;
 import com.example.homework1.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -22,5 +17,10 @@ public class PostController {
     @GetMapping("/posts")
     public PostsListResponseDto getPosts() {
         return postService.getPosts();
+    }
+
+    @PostMapping("/post")
+    public PostResponseDto creatPost(@RequestBody RequestDto requestDto){
+        return postService.creatPost(requestDto);
     }
 }

@@ -9,15 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class PostsListResponseDto extends PostsResponseDto{
+public class PostsListResponseDto {
 
-    List<PostsResponseDto> PostsList = new ArrayList<>();
+    List<PostResponseDto> PostsList = new ArrayList<>();
 
-    public PostsListResponseDto(Post post) {
-        super(post);
-    }
-
-    public void addPosts(PostsResponseDto postsResponseDto) {
+    public void addPosts(PostResponseDto postsResponseDto) {
         PostsList.add(postsResponseDto);
     }
 

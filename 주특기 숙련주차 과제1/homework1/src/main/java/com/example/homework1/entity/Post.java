@@ -1,5 +1,6 @@
 package com.example.homework1.entity;
 
+import com.example.homework1.dto.RequestDto;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -22,4 +23,11 @@ public class Post extends Timestamped{
     private LocalDateTime createdAt;
     @Column
     private LocalDateTime modifiedAt;
+
+    public Post(RequestDto requestDto){
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        //미완성, username을 알아야함
+
+    }
 }

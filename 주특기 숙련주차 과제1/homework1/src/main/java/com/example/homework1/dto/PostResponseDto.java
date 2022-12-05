@@ -5,7 +5,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 @Getter
-public class PostsResponseDto {
+public class PostResponseDto {
 
     private String title;
     private String username;
@@ -13,11 +13,14 @@ public class PostsResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public PostsResponseDto(Post post){
+    public PostResponseDto(Post post){
         title = post.getTitle();
         username = post.getUsername();
         content = post.getContent();
         createdAt = post.getCreatedAt();
         modifiedAt = post.getModifiedAt();
+    }
+
+    public PostResponseDto() {
     }
 }
