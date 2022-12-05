@@ -1,13 +1,15 @@
 package com.example.homework1.entity;
 
-import com.example.homework1.dto.RequestDto;
+import com.example.homework1.dto.PostRequestDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Post extends Timestamped{
 
     @Id
@@ -19,15 +21,10 @@ public class Post extends Timestamped{
     private String username;
     @Column
     private String content;
-    @Column
-    private LocalDateTime createdAt;
-    @Column
-    private LocalDateTime modifiedAt;
 
-    public Post(RequestDto requestDto){
+    public Post(PostRequestDto requestDto, String username){
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        //미완성, username을 알아야함
-
+        this.username = username;
     }
 }

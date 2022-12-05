@@ -2,10 +2,13 @@ package com.example.homework1.controller;
 
 import com.example.homework1.dto.PostsListResponseDto;
 import com.example.homework1.dto.PostResponseDto;
-import com.example.homework1.dto.RequestDto;
+import com.example.homework1.dto.PostRequestDto;
 import com.example.homework1.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api")
@@ -20,7 +23,8 @@ public class PostController {
     }
 
     @PostMapping("/post")
-    public PostResponseDto creatPost(@RequestBody RequestDto requestDto){
-        return postService.creatPost(requestDto);
+    public PostResponseDto creatPost(@RequestBody PostRequestDto requestDto, HttpServletRequest request){
+        return postService.creatPost(requestDto, request);
     }
+
 }

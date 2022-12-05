@@ -20,7 +20,4 @@ public class PostResponseDto {
         createdAt = post.getCreatedAt();
         modifiedAt = post.getModifiedAt();
     }
-
-    public PostResponseDto() {
-    }
 }
