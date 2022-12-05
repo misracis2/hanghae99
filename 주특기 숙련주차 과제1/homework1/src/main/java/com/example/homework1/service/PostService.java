@@ -52,4 +52,11 @@ public class PostService {
         }
         return null; //무엇을 반환해야할까? PostResponseDto에 에러메시지를 담아 보낼까?
     }
+
+    public PostResponseDto getPost(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
+        );
+        return new PostResponseDto(post);
+    }
 }
