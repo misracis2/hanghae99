@@ -27,4 +27,14 @@ public class Post extends Timestamped{
         this.content = requestDto.getContent();
         this.username = username;
     }
+    //entity에서 메소드를 가져도 되나?
+    public Post(PostRequestDto requestDto){
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+    }
+
+    public void update(PostRequestDto requestDto){
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+    }
 }

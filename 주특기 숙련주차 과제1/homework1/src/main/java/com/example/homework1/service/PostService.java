@@ -1,5 +1,6 @@
 package com.example.homework1.service;
 
+import com.example.homework1.dto.DeleteResponseDto;
 import com.example.homework1.dto.PostsListResponseDto;
 import com.example.homework1.dto.PostResponseDto;
 import com.example.homework1.dto.PostRequestDto;
@@ -11,6 +12,7 @@ import com.example.homework1.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +52,7 @@ public class PostService {
             postRepository.save(post);
             return new PostResponseDto(post);
         }
-        return null; //무엇을 반환해야할까? PostResponseDto에 에러메시지를 담아 보낼까?
+        throw new IllegalArgumentException("로그인이 필요합니다");
     }
 
     public PostResponseDto getPost(Long id) {
@@ -58,5 +60,49 @@ public class PostService {
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
         );
         return new PostResponseDto(post);
+    }
+
+    @Transactional
+    public PostResponseDto updatePost(Long id, PostRequestDto requestDto,HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+        if(token != null) {
+            if (jwtUtil.validateToken(token)) {
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("Token Error");
+            }
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
+                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다")
+            );
+            //게시글 수정 리턴값에 modifiedAt 값이 최신화되지 않는 문제
+            Post post = postRepository.findByIdAndUsername(id, user.getUsername());
+            if(post != null){
+                post.update(requestDto);
+                return new PostResponseDto(post);
+            }else{
+                throw new IllegalArgumentException("올바른 사용자가 아닙니다");
+            }
+        }throw new IllegalArgumentException("로그인이 필요합니다");
+    }
+
+    public DeleteResponseDto deletePost(Long id, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+        if(token != null) {
+            if (jwtUtil.validateToken(token)) {
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("Token Error");
+            }
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
+                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다")
+            );
+            Post post = postRepository.findByIdAndUsername(id, user.getUsername());
+            if(post != null){
+                postRepository.deleteById(id);
+                return new DeleteResponseDto("삭제를 완료했습니다", HttpStatus.OK.value());
+            }
+        }throw new IllegalArgumentException("로그인이 필요합니다");
     }
 }

@@ -1,5 +1,6 @@
 package com.example.homework1.controller;
 
+import com.example.homework1.dto.DeleteResponseDto;
 import com.example.homework1.dto.PostsListResponseDto;
 import com.example.homework1.dto.PostResponseDto;
 import com.example.homework1.dto.PostRequestDto;
@@ -32,4 +33,13 @@ public class PostController {
         return postService.getPost(id);
     }
 
+    @PutMapping("/post/{id}")
+    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, HttpServletRequest request){
+        return postService.updatePost(id, requestDto,request);
+    }
+
+    @DeleteMapping("/post/{id}")
+    public DeleteResponseDto deletePost(@PathVariable Long id, HttpServletRequest request){
+        return postService.deletePost(id,request);
+    }
 }
