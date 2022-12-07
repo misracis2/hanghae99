@@ -6,10 +6,8 @@ import com.example.homework2.dto.PostResponseDto;
 import com.example.homework2.dto.PostRequestDto;
 import com.example.homework2.entity.Post;
 import com.example.homework2.entity.User;
-import com.example.homework2.jwt.JwtUtil;
 import com.example.homework2.repository.PostRepository;
 import com.example.homework2.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,8 +20,9 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final JwtUtil jwtUtil;
+
     private final UserRepository userRepository;
+    private final TokenCheck tokenCheck;
 
     @Transactional
     public PostsListResponseDto getPosts() {
@@ -36,22 +35,10 @@ public class PostService {
     }
     @Transactional
     public PostResponseDto creatPost(PostRequestDto requestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        Claims claims;
-        if(token != null) {
-            if (jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다")
-            );
-            Post post = new Post(requestDto, user.getUsername());
-            postRepository.save(post);
-            return new PostResponseDto(post);
-        }
-        throw new IllegalArgumentException("로그인이 필요합니다");
+        User user = tokenCheck.tokenChecking(request);
+        Post post = new Post(requestDto, user.getUsername());
+        postRepository.save(post);
+        return new PostResponseDto(post);
     }
 
     public PostResponseDto getPost(Long id) {
@@ -63,45 +50,25 @@ public class PostService {
 
     @Transactional
     public PostResponseDto updatePost(Long id, PostRequestDto requestDto,HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        Claims claims;
-        if(token != null) {
-            if (jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다")
-            );
-            //게시글 수정 리턴값에 modifiedAt 값이 최신화되지 않는 문제
-            Post post = postRepository.findByIdAndUsername(id, user.getUsername());
-            if(post != null){
-                post.update(requestDto);
-                return new PostResponseDto(post);
-            }else{
-                throw new IllegalArgumentException("올바른 사용자가 아닙니다");
-            }
-        }throw new IllegalArgumentException("로그인이 필요합니다");
+        User user = tokenCheck.tokenChecking(request);
+
+        //게시글 수정 리턴값에 modifiedAt 값이 최신화되지 않는 문제
+        Post post = postRepository.findByIdAndUsername(id, user.getUsername());
+        if(post != null){
+            post.update(requestDto);
+            return new PostResponseDto(post);
+        }else{
+            throw new IllegalArgumentException("올바른 사용자가 아닙니다");
+        }
     }
 
     public DeleteResponseDto deletePost(Long id, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        Claims claims;
-        if(token != null) {
-            if (jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다")
-            );
-            Post post = postRepository.findByIdAndUsername(id, user.getUsername());
-            if(post != null){
-                postRepository.deleteById(id);
-                return new DeleteResponseDto("삭제를 완료했습니다", HttpStatus.OK.value());
-            }
-        }throw new IllegalArgumentException("로그인이 필요합니다");
+        User user = tokenCheck.tokenChecking(request);
+
+        Post post = postRepository.findByIdAndUsername(id, user.getUsername());
+        if(post != null){
+            postRepository.deleteById(id);
+            return new DeleteResponseDto("삭제를 완료했습니다", HttpStatus.OK.value());
+        }throw new IllegalArgumentException("올바른 사용자가 아닙니다");
     }
 }
