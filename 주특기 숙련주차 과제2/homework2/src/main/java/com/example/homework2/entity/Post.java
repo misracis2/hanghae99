@@ -19,12 +19,12 @@ public class Post extends Timestamped{
     private Long id;
     @Column
     private String title;
-    @Column
+    @Column(name = "psot_username")
     private String username;
     @Column
     private String content;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> commentList = new ArrayList<>();
 
 
