@@ -28,7 +28,8 @@ public class CommentController {
     }
 
     @DeleteMapping("/post/{postid}/{commentid}")
-    public CommentDeleteResponseDto deleteComment(@PathVariable Long postid, @PathVariable Long commentid, @RequestBody HttpServletRequest request) {
+    public CommentDeleteResponseDto deleteComment(@PathVariable Long postid, @PathVariable Long commentid, HttpServletRequest request) {
+        System.out.println(postid + commentid);
         return commentService.deleteComment(postid, commentid, request);
     }
 }

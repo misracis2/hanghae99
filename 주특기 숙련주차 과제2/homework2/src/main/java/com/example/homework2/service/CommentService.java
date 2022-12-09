@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -47,7 +45,7 @@ public class CommentService {
         comment.update(commentRequsetDto);
         return new CommentResponseDto(comment.getComment(), comment.getUsername());
     }
-    @Transactional
+
     public CommentDeleteResponseDto deleteComment(Long postid, Long commentid, HttpServletRequest request) {
         User user = tokenCheck.tokenChecking(request);
         Post post = postRepository.findByIdAndUsername(postid, user.getUsername());
