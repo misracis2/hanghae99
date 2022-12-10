@@ -21,6 +21,7 @@ public class Comment extends Timestamped{
     private String comment;
 
     @ManyToOne
+    @JoinColumn(name = "post_id")
     private Post post;
 
     public Comment(CommentRequsetDto commentRequsetDto, Post post, String username){

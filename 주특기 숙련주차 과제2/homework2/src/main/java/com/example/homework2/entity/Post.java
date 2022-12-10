@@ -14,19 +14,14 @@ import java.util.List;
 public class Post extends Timestamped{
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column
     private String title;
-    @Column(name = "psot_username")
+    @Column(name = "post_username")
     private String username;
     @Column
     private String content;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    private List<Comment> commentList = new ArrayList<>();
-
 
     public Post(PostRequestDto requestDto, String username){
         this.title = requestDto.getTitle();
