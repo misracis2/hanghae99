@@ -1,7 +1,7 @@
 package com.example.homework2.controller;
 
 import com.example.homework2.dto.CommentDeleteResponseDto;
-import com.example.homework2.dto.CommentRequsetDto;
+import com.example.homework2.dto.CommentRequestDto;
 import com.example.homework2.dto.CommentResponseDto;
 import com.example.homework2.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -10,26 +10,25 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/comment")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
-
-    @PostMapping("/post/{postid}/comment")
-    public CommentResponseDto saveComment(@PathVariable Long postid, @RequestBody CommentRequsetDto commentRequsetDto, HttpServletRequest request){
-        return commentService.saveComment(postid, commentRequsetDto, request);
+    //댓글 생성
+    @PostMapping("/{postid}/comment")
+    public CommentResponseDto saveComment(@PathVariable Long postid, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
+        return commentService.saveComment(postid, commentRequestDto, request);
     }
-
-    @PutMapping("/post/{postid}/{commentid}")
-    public CommentResponseDto updateComment(@PathVariable Long postid, @PathVariable Long commentid, @RequestBody CommentRequsetDto commentRequsetDto, HttpServletRequest request){
-        return commentService.updateComment(postid, commentid, commentRequsetDto, request);
+    //댓글 수정
+    @PutMapping("/{postid}/{commentid}")
+    public CommentResponseDto updateComment(@PathVariable Long postid, @PathVariable Long commentid, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
+        return commentService.updateComment(postid, commentid, commentRequestDto, request);
     }
-
-    @DeleteMapping("/post/{postid}/{commentid}")
+    //댓글 삭제
+    @DeleteMapping("/{postid}/{commentid}")
     public CommentDeleteResponseDto deleteComment(@PathVariable Long postid, @PathVariable Long commentid, HttpServletRequest request) {
-        System.out.println(postid + commentid);
         return commentService.deleteComment(postid, commentid, request);
     }
 }

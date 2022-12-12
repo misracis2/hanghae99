@@ -1,8 +1,6 @@
 package com.example.homework2.entity;
 
-import com.example.homework2.dto.CommentRequsetDto;
-import com.example.homework2.dto.PostRequestDto;
-import com.example.homework2.entity.Post;
+import com.example.homework2.dto.CommentRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,20 +16,20 @@ public class Comment extends Timestamped{
     private Long id;
 
     private String username;
-    private String comment;
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public Comment(CommentRequsetDto commentRequsetDto, Post post, String username){
-        this.comment = commentRequsetDto.getComment();
+    public Comment(CommentRequestDto commentRequestDto, Post post, String username){
+        this.content = commentRequestDto.getComment();
         this.post = post;
         this.username = username;
     }
 
-    public void update(CommentRequsetDto commentRequestDto){
-        this.comment = commentRequestDto.getComment();
+    public void update(CommentRequestDto commentRequestDto){
+        this.content = commentRequestDto.getComment();
     }
 
 }
