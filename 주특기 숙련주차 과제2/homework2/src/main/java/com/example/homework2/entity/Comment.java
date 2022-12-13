@@ -15,17 +15,19 @@ public class Comment extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public Comment(CommentRequestDto commentRequestDto, Post post, String username){
+    public Comment(CommentRequestDto commentRequestDto, Post post, User user){
         this.content = commentRequestDto.getComment();
         this.post = post;
-        this.username = username;
+        this.user = user;
     }
 
     public void update(CommentRequestDto commentRequestDto){
