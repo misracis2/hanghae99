@@ -14,11 +14,11 @@ import java.util.List;
 public class Post extends Timestamped{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String title;
-    @Column(name = "post_username")
+    @Column(nullable = false)
     private String username;
     @Column
     private String content;
@@ -28,7 +28,6 @@ public class Post extends Timestamped{
         this.content = requestDto.getContent();
         this.username = username;
     }
-    //entity에서 메소드를 가져도 되나?
     public Post(PostRequestDto requestDto){
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();

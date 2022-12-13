@@ -5,6 +5,7 @@ import com.example.homework2.dto.PostsListResponseDto;
 import com.example.homework2.dto.PostResponseDto;
 import com.example.homework2.dto.PostRequestDto;
 import com.example.homework2.service.PostService;
+import com.example.homework2.service.TokenCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class PostController {
 
     private final PostService postService;
+    private final TokenCheck tokenCheck;
 
     @GetMapping("/posts")
     public PostsListResponseDto getPosts() {
@@ -24,7 +26,7 @@ public class PostController {
 
     @PostMapping("/post")
     public PostResponseDto creatPost(@RequestBody PostRequestDto requestDto, HttpServletRequest request){
-        return postService.creatPost(requestDto, request);
+            return postService.creatPost(requestDto, request);
     }
 
     @GetMapping("/post/{id}")

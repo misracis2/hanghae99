@@ -31,7 +31,7 @@ public class CommentService {
         User user = tokenChecking(request);
         //게시글 저장 여부 확인
         Post post = postRepository.findById(postid).orElseThrow(
-                () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
+                () -> new NullPointerException("게시글이 존재하지 않습니다")
         );
         //댓글 저장
         Comment comment = new Comment(commentRequestDto,  post, user.getUsername());
@@ -44,11 +44,11 @@ public class CommentService {
         User user = tokenChecking(request);
         //게시글 존재 여부 확인
         Post post = postRepository.findById(postid).orElseThrow(
-                () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
+                () -> new NullPointerException("게시글이 존재하지 않습니다")
         );
         //댓글 존재 여부 확인
         Comment comment = commentRepository.findById(commentid).orElseThrow(
-                () -> new IllegalArgumentException("댓글이 존재하지 않습니다")
+                () -> new NullPointerException("댓글이 존재하지 않습니다")
         );
         //댓글 업데이트
         comment.update(commentRequestDto);
@@ -61,11 +61,11 @@ public class CommentService {
         User user = tokenChecking(request);
         //게시글 저장 여부 확인
         Post post = postRepository.findById(postid).orElseThrow(
-                () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
+                () -> new NullPointerException("게시글이 존재하지 않습니다")
         );
         //댓글 저장 여부 확인
         Comment comment = commentRepository.findById(commentid).orElseThrow(
-                () -> new IllegalArgumentException("댓글이 존재하지 않습니다")
+                () -> new NullPointerException("댓글이 존재하지 않습니다")
         );
         //댓글 삭제
         commentRepository.deleteById(commentid);
@@ -83,7 +83,7 @@ public class CommentService {
                 throw new IllegalArgumentException("Token Error");
             }
             User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다")
+                    () -> new NullPointerException("사용자가 존재하지 않습니다")
             );
             return user;
         }throw new IllegalArgumentException("로그인이 필요합니다");
