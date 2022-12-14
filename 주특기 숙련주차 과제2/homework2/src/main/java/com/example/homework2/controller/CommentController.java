@@ -17,18 +17,18 @@ public class CommentController {
     private final CommentService commentService;
 
     //댓글 생성
-    @PostMapping("/{postid}/comment")
-    public CommentResponseDto saveComment(@PathVariable Long postid, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
-        return commentService.saveComment(postid, commentRequestDto, request);
+    @PostMapping("/{postId}")
+    public CommentResponseDto saveComment(@PathVariable Long postId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
+        return commentService.saveComment(postId, commentRequestDto, request);
     }
     //댓글 수정
-    @PutMapping("/{postid}/{commentid}")
-    public CommentResponseDto updateComment(@PathVariable Long postid, @PathVariable Long commentid, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
-        return commentService.updateComment(postid, commentid, commentRequestDto, request);
+    @PutMapping("/{postId}/{commentId}")
+    public CommentResponseDto updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
+        return commentService.updateComment(postId, commentId, commentRequestDto, request);
     }
     //댓글 삭제
-    @DeleteMapping("/{postid}/{commentid}")
-    public CommentDeleteResponseDto deleteComment(@PathVariable Long postid, @PathVariable Long commentid, HttpServletRequest request) {
-        return commentService.deleteComment(postid, commentid, request);
+    @DeleteMapping("/{postId}/{commentId}")
+    public CommentDeleteResponseDto deleteComment(@PathVariable Long postId, @PathVariable Long commentId, HttpServletRequest request) {
+        return commentService.deleteComment(postId, commentId, request);
     }
 }

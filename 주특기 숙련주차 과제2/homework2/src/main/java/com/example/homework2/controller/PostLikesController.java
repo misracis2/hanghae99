@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/postlikes")
+@RequestMapping("/api/post/like")
 public class PostLikesController {
 
     private final PostLikesService postLikesService;

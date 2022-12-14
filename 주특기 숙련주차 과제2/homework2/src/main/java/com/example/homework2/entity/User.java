@@ -15,7 +15,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, columnDefinition = "varchar(10)")
     private String username;
     @Column(nullable = false)
     private String password;
@@ -26,6 +26,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     List<PostLikes> postLikesList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     List<CommentLikes> commentLikesList = new ArrayList<>();

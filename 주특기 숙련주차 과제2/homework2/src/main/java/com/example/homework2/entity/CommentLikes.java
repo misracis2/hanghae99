@@ -14,18 +14,19 @@ public class CommentLikes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
-    Long commentId;
-
     @ManyToOne
+    @JoinColumn(name = "comment_id", nullable = false)
+    Comment comment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     User user;
 
     @Column
     boolean isLike;
 
-    public CommentLikes(Long commentId, User user, boolean isLike) {
-        this.commentId = commentId;
+    public CommentLikes(Comment comment, User user, boolean isLike) {
+        this.comment = comment;
         this.user = user;
         this.isLike = isLike;
     }

@@ -4,8 +4,10 @@ import com.example.homework2.dto.DeleteResponseDto;
 import com.example.homework2.dto.PostsListResponseDto;
 import com.example.homework2.dto.PostResponseDto;
 import com.example.homework2.dto.PostRequestDto;
+import com.example.homework2.entity.Comment;
 import com.example.homework2.entity.Post;
 import com.example.homework2.entity.User;
+import com.example.homework2.repository.CommentRepository;
 import com.example.homework2.repository.PostRepository;
 import com.example.homework2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final TokenCheck tokenCheck;
 
     @Transactional
@@ -46,7 +48,8 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
         );
-        return new PostResponseDto(post);
+        List<Comment> commentList = commentRepository.findAllByOrderByModifiedAtDesc();
+        return new PostResponseDto(post, commentList);
     }
 
     @Transactional
